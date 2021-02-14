@@ -95,18 +95,23 @@ public class Main {
 //    Участник #4 закончил этап: Дорога 40 метров
 //    ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!
 
-    public static final int CARS_COUNT = 4;
+    public static final int CARS_COUNT = 4; //число объектов машин
     public static void main(String[] args) {
 
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-        Race race = new Race(new Road(60), new Tunnel(), new Road(40));
-        Car[] cars = new Car[CARS_COUNT];
-        for (int i = 0; i < cars.length; i++) {
+
+        Race race = new Race(new Road(60), new Tunnel(), new Road(40));   //препятствия
+
+        Car[] cars = new Car[CARS_COUNT];  //массив объектов машин
+
+        for (int i = 0; i < cars.length; i++) {    //инициализация машин
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
         }
-        for (int i = 0; i < cars.length; i++) {
+
+        for (int i = 0; i < cars.length; i++) {   //подготовка машин
             new Thread(cars[i]).start();
         }
+        
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
     }
