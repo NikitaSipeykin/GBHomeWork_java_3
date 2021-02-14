@@ -1,16 +1,19 @@
 package ru.geekbrains.NSipeykin.lesson5;
 
+import java.util.concurrent.CyclicBarrier;
+
 public class Main {
-//TODO:
+//
 // 1. Приведённый код перенести в новый проект.
 //
-//TODO:    Организуем гонки:
+//   Организуем гонки:
 //    Все участники должны стартовать одновременно, несмотря на то, что на подготовку у каждого из них уходит разное время.
 //    В туннель не может заехать одновременно больше половины участников (условность).
 //    Попробуйте всё это синхронизировать.
 //    Только после того как все завершат гонку, нужно выдать объявление об окончании.
 //    Можете корректировать классы (в т.ч. конструктор машин) и добавлять объекты классов из пакета util.concurrent.
 //    Пример выполнения кода до корректировки:
+//todo: Реализовать победу
 
 //    ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!
 //    Участник #2 готовится
@@ -96,23 +99,32 @@ public class Main {
 //    ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!
 
     public static final int CARS_COUNT = 4; //число объектов машин
+    public static Thread[] threads = new Thread[CARS_COUNT];
+
     public static void main(String[] args) {
-
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-
-        Race race = new Race(new Road(60), new Tunnel(), new Road(40));   //препятствия
-
+        Race race = new Race(new Road(60), new Tunnel((int) (CARS_COUNT/2)), new Road(40));   //препятствия
         Car[] cars = new Car[CARS_COUNT];  //массив объектов машин
+
+        Car.setCb(new CyclicBarrier(CARS_COUNT, new StartMessage()));
 
         for (int i = 0; i < cars.length; i++) {    //инициализация машин
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
         }
 
         for (int i = 0; i < cars.length; i++) {   //подготовка машин
-            new Thread(cars[i]).start();
+            threads[i] = new Thread(cars[i]);
+            threads[i].start();
         }
-        
-        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
+
+        for (int i = 0; i < cars.length; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
     }
 }
