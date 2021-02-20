@@ -1,7 +1,5 @@
 package ru.geekbrains.NSipeykin.lesson6;
 
-import java.util.Arrays;
-
 public class Main {
 
 //TODO:
@@ -21,19 +19,5 @@ public class Main {
 //            [ 1 4 4 1 1 4 3 ] -> false
 
     public static void main(String[] args) {
-
-
-
-
-        int[] arr5 = {1, 1, 1, 4, 4, 1, 4, 4};
-        int[] arr6 = {1, 1, 1, 1, 1, 1};
-        int[] arr7 = {4, 4, 4, 4};
-        int[] arr8 = {1, 4, 4, 1, 1, 4, 3};
-
-
-//        System.out.println(work.checkArrayFor1And4(arr5));
-//        System.out.println(work.checkArrayFor1And4(arr6));
-//        System.out.println(work.checkArrayFor1And4(arr7));
-//        System.out.println(work.checkArrayFor1And4(arr8));
     }
 }

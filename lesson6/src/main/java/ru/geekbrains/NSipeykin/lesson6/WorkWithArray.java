@@ -24,7 +24,7 @@ public class WorkWithArray {
         }
     }
 
-    public boolean checkArrayFor1And4(int[] arr) {
+    public static boolean checkArrayFor1And4(int[] arr) {
         int count1 = 0, count4 = 0;
         for (int x : arr) {
             if (x == 1) {

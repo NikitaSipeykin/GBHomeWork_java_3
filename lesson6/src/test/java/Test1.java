@@ -2,7 +2,7 @@ import org.junit.Assert;
 import ru.geekbrains.NSipeykin.lesson6.WorkWithArray;
 import org.junit.Test;
 
-public class test1 {
+public class Test1 {
 
     @Test
     public void testOne(){
