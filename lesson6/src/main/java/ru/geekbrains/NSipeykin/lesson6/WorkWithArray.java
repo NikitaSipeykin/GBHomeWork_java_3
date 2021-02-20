@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class WorkWithArray {
 
-    public int[] getPartOfArray(int[] arr) throws RuntimeException {
+    public static int[] getPartOfArray(int[] arr) throws RuntimeException {
         if (arr.length == 0) {
             throw new NullPointerException();
         }
