@@ -1,3 +1,7 @@
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Comparator;
+
 public class Main {
 
 //TODO:
@@ -10,7 +14,47 @@ public class Main {
 //    одинаковый, то порядок не имеет значения. Методы с аннотациями @BeforeSuite и @AfterSuite должны
 //    присутствовать в единственном экземпляре, иначе необходимо бросить RuntimeException при запуске «тестирования».
 
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws Exception{
+        Class c = MyClass.class;
+        Object testObj = c.newInstance();
+        ArrayList<Method> methodArrayList = new ArrayList<>();
+        Method beforeMethod = null;
+        Method afterMethod = null;
+        for (Method o: c.getDeclaredMethods()) {
+            if (o.isAnnotationPresent(Test.class)){
+                methodArrayList.add(o);
+            }
+            if (o.isAnnotationPresent(BeforeSuite.class)){
+                if (beforeMethod == null){
+                    beforeMethod = o;
+                }else {
+                    throw new RuntimeException("More than one method with BeforeSuite annotation");
+                }
+            }
+            if (o.isAnnotationPresent(AfterSuite.class)){
+                if (afterMethod == null){
+                    afterMethod = o;
+                }else {
+                    throw new RuntimeException("More than one method with AfterSuite annotation");
+                }
+            }
+            methodArrayList.sort(new Comparator<Method>() {
+                @Override
+                public int compare(Method o1, Method o2) {
+                    return o2.getAnnotation(Test.class).priority() - o1.getAnnotation(Test.class).priority();
+                }
+            });
+        }
+        if (beforeMethod != null){
+            beforeMethod.invoke(testObj, null);
+        }
+
+        for (Method o : methodArrayList) {
+            o.invoke(testObj, null);
+        }
+
+        if (afterMethod != null){
+            afterMethod.invoke(testObj, null);
+        }
     }
 }
